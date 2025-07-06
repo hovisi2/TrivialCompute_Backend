@@ -1,0 +1,5 @@
+fastapi[standard]
+uvicorn
+websockets
+pyyaml
+mysql-connector-python
