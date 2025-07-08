@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Form
 import mysql.connector
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,7 +8,7 @@ conn=mysql.connector.connect(
         host="localhost",
         user="user",
         passwd="password",
-        database="test"
+        database="trivial_compute"
 )
 
 app.add_middleware(
@@ -26,6 +26,15 @@ def root():
 @app.get("/get_data")
 def get_tasks():
     cursor=conn.cursor(dictionary=True)
-    cursor.execute("select * from Data") 
+    cursor.execute("select * from questions") 
     records=cursor.fetchall()
     return records
+
+@app.post("/add_question")
+def add_question( category:str=Form(...), 
+                 question:str=Form(...),
+                 answer:str=Form(...)):
+    cursor=conn.cursor()
+    cursor.execute("insert into questions (category, question, answer) values (%s,%s,%s)", (category, question, answer))
+    conn.commit()
+    return {"status": "success", "data": category}
