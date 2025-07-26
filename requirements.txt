@@ -3,3 +3,4 @@ uvicorn
 websockets
 pyyaml
 mysql-connector-python
+pydantic
